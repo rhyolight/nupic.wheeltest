@@ -28,7 +28,7 @@ before_install:
 
 install:
   - NUPIC_SHA=`cat nupic_sha.txt`
-  - echo NUPIC SHA: $NUPIC_SHA
+  - "echo NUPIC SHA: $NUPIC_SHA"
 
   # Fetches the NuPIC wheels.
   - python fetch_wheels.py
