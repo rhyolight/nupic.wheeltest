@@ -1,0 +1,43 @@
+language: python
+
+branches:
+  only: master
+
+env:
+  global:
+  - AWS_ACCESS_KEY_ID=AKIAIGHYSEHV3WFKOWNQ
+  - secure: Lrb/OJ6iMQ34xyOTz53g3+B/OEZvOT26FVxOr1J8zqnZ11QPvJDO0zb8xd6A3FdDLGQh0NJOo3ZieN96BqSajYMVYeWVCR3qCReOIn3TwNNaD7UfuHoRPBkMQd7Th/EHNC4h0hurRjU7GYvjbFkSFpHlJ5yj3neBrvJspn4Hx5U=
+
+before_install:
+  # Upgrade pip
+  - pip install --upgrade pip
+
+  # Wheels is currently used for installation.
+  - pip install wheel
+
+  # These are required for the fetch_egg script.
+  - pip install requests
+  - pip install boto
+
+  # install gcc-4.8 for C++11 compatibility, #TODO remove when Travis has gcc>=4.8, (it's used for clang too, in coveralls)
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get -qq update
+  - sudo apt-get -qq install g++-4.8
+  - alias gcc='gcc-4.8'
+  - alias g++='g++-4.8'
+
+install:
+  - NUPIC_SHA=`cat nupic_sha.txt`
+  - echo "NUPIC SHA: $NUPIC_SHA"
+
+  # Fetches the NuPIC wheels.
+  - python fetch_wheels.py
+
+  # Install wheels we just downloaded.
+  - NUPIC_VERSION=`ls ./wheelhouse | grep nupic | cut -d'-' -f2`
+  - echo "Installing NuPIC ${NUPIC_VERSION} with wheels..."
+  - pip install --use-wheel --no-index --find-links=wheelhouse nupic==${NUPIC_VERSION}
+
+script:
+  # Test out the installation.
+  - py.test tests/
