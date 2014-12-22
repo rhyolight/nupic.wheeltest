@@ -7,6 +7,7 @@ env:
   global:
   - AWS_ACCESS_KEY_ID=AKIAIGHYSEHV3WFKOWNQ
   - secure: "NCj17arsKprxHpV97Qhk1FOY3FsoBQW8a0A7Uwb9HnzpsxL44MFvl0cKxhaec3EbfrE4HRlxEzMaPmx7oDxKaOjUi6BdZJTFLI//xBCM/aySbTf/KX9jCPZfvelCUP6MLOL9UkGFx5osZfCM4dq+PoK4QO6RtdXXk4/CU4mc/1c="
+  - NTA_CONF_PATH: ${TRAVIS_BUILD_DIR}
 
 before_install:
   # Upgrade pip
